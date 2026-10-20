@@ -18,9 +18,10 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/textViewName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="NAME"
+            android:text="Experiment"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="40sp" />
@@ -46,10 +47,10 @@
                 android:padding="10sp">
 
                 <TextView
-                    android:id="@+id/textView"
+                    android:id="@+id/textViewDesc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="DESCRIPTION\nDESCRIPTION"
+                    android:text="Lorem ipsum\nLorem ipsum"
                     android:textColor="@color/white"
                     android:textSize="20sp" />
             </FrameLayout>
@@ -89,19 +90,48 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="20sp"
                             android:background="#27FFFFFF"
-                            android:padding="10sp">
+                            android:padding="5sp">
 
+                            <TextView
+                                android:id="@+id/textViewAim"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textColor="@color/white"
+                                android:text="Aim speed: 100%" />
+
+                            <TextView
+                                android:id="@+id/textViewMove"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textColor="@color/white"
+                                android:text="Move speed: 100%" />
                         </LinearLayout>
 
-                        <FrameLayout
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="#27FFFFFF"
-                            android:padding="10sp">
+                            android:padding="5sp">>
 
-                        </FrameLayout>
+                            <TextView
+                                android:id="@+id/textViewReload"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textColor="@color/white"
+                                android:text="Reload speed: 100%" />
+
+                            <TextView
+                                android:id="@+id/textViewHealth"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textColor="@color/white"
+                                android:text="Health: 100" />
+                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -113,6 +143,28 @@
                         android:layout_marginLeft="20sp"
                         android:padding="10sp">
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/textView8"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textAlignment="center"
+                                android:textColor="@color/white"
+                                android:text="Starting weapon:" />
+
+                            <TextView
+                                android:id="@+id/textViewWeapon"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="20sp"
+                                android:textAlignment="center"
+                                android:textColor="@color/white"
+                                android:text="Pistol" />
+                        </LinearLayout>
                     </FrameLayout>
                 </LinearLayout>
 
