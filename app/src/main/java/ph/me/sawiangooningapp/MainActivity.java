@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         btnPrev = findViewById(R.id.buttonPrev);
         btnNext = findViewById(R.id.buttonNext);
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://my-json-server.typicode.com/kitykatgirl/sawian-db/").addConverterFactory(GsonConverterFactory.create()).build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://raw.githubusercontent.com/kitykatgirl/sawian-db/main/").addConverterFactory(GsonConverterFactory.create()).build();
 
         JsonPlaceholderApi jsonPlaceholderApi = retrofit.create(JsonPlaceholderApi.class);
         Call<List<Sawian>> call = jsonPlaceholderApi._getSawian();

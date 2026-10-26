@@ -6,6 +6,6 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 
 public interface JsonPlaceholderApi {
-    @GET("Sawian")
+    @GET("db.json")
     public Call<List<Sawian>>_getSawian();
 }
