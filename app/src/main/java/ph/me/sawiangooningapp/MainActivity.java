@@ -1,9 +1,8 @@
+
 package ph.me.sawiangooningapp;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -22,41 +21,50 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView name, desc, aim, move, reload, health, weapon, gameplay;
-    Button btnPrev, btnNext;
-    List<Sawian> sawiansList;
-    int currentSaw;
+    private SawianAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-        name = findViewById(R.id.textViewName);
-        desc = findViewById(R.id.textViewDesc);
-        aim = findViewById(R.id.textViewAim);
-        move = findViewById(R.id.textViewMove);
-        reload = findViewById(R.id.textViewReload);
-        health = findViewById(R.id.textViewHealth);
-        weapon = findViewById(R.id.textViewWeapon);
-        gameplay = findViewById(R.id.textViewGameplay);
 
-        btnPrev = findViewById(R.id.buttonPrev);
-        btnNext = findViewById(R.id.buttonNext);
+        ViewCompat.setOnApplyWindowInsetsListener(
+                findViewById(R.id.main), (v, insets) -> {
+                    Insets systemBars = insets.getInsets(
+                            WindowInsetsCompat.Type.systemBars());
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://raw.githubusercontent.com/kitykatgirl/sawian-db/main/").addConverterFactory(GsonConverterFactory.create()).build();
+                    v.setPadding(
+                            systemBars.left,
+                            systemBars.top,
+                            systemBars.right,
+                            systemBars.bottom
+                    );
 
-        JsonPlaceholderApi jsonPlaceholderApi = retrofit.create(JsonPlaceholderApi.class);
-        Call<List<Sawian>> call = jsonPlaceholderApi._getSawian();
+                    return insets;
+                });
+
+        ListView listView = findViewById(R.id.listViewSawians);
+
+        adapter = new SawianAdapter(this, new java.util.ArrayList<>());
+        listView.setAdapter(adapter);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://raw.githubusercontent.com/kitykatgirl/sawian-db/main/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        JsonPlaceholderApi api =
+                retrofit.create(JsonPlaceholderApi.class);
+
+        Call<List<Sawian>> call = api._getSawian();
 
         call.enqueue(new Callback<List<Sawian>>() {
             @Override
-            public void onResponse(Call<List<Sawian>> call, Response<List<Sawian>> response) {
+            public void onResponse(
+                    Call<List<Sawian>> call,
+                    Response<List<Sawian>> response) {
+
                 if (!response.isSuccessful()) {
                     Toast.makeText(
                             MainActivity.this,
@@ -65,57 +73,26 @@ public class MainActivity extends AppCompatActivity {
                     ).show();
                     return;
                 }
-                sawiansList = response.body();
-                setCurrentSawian(0);
+
+                List<Sawian> sawianList = response.body();
+
+                if (sawianList != null) {
+                    adapter.addAll(sawianList);
+                    adapter.notifyDataSetChanged();
+                }
             }
 
             @Override
-            public void onFailure(Call<List<Sawian>> call, Throwable t) {
+            public void onFailure(
+                    Call<List<Sawian>> call,
+                    Throwable t) {
+
+                Toast.makeText(
+                        MainActivity.this,
+                        "Network error: " + t.getMessage(),
+                        Toast.LENGTH_LONG
+                ).show();
             }
         });
-
-        btnPrev.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (sawiansList == null || sawiansList.isEmpty()) {
-                    return;
-                }
-
-                if (currentSaw == 0) {
-                    setCurrentSawian(sawiansList.size() - 1);
-                } else {
-                    setCurrentSawian(currentSaw - 1);
-                }
-            }
-        });
-
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (sawiansList == null || sawiansList.isEmpty()) {
-                    return;
-                }
-
-                if (currentSaw == sawiansList.size() - 1) {
-                    setCurrentSawian(0);
-                } else {
-                    setCurrentSawian(currentSaw + 1);
-                }
-            }
-        });
-    }
-
-    private void setCurrentSawian(int index){
-        Sawian chosenSaw = sawiansList.get(index);
-
-        name.setText(chosenSaw.getName());
-        desc.setText(chosenSaw.getDescription());
-        aim.setText(chosenSaw.getAim());
-        move.setText(chosenSaw.getMove());
-        reload.setText(chosenSaw.getReload());
-        health.setText(chosenSaw.getHealth());
-        weapon.setText(chosenSaw.getWeapon());
-        gameplay.setText(chosenSaw.getGameplay());
-        currentSaw = index;
     }
 }
